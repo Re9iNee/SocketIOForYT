@@ -6,7 +6,6 @@ import { Server } from "socket.io";
 
 const app = express();
 const server = createServer(app);
-const io = new Server(server);
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 
@@ -14,9 +13,12 @@ app.get("/", (req, res) => {
   res.sendFile(join(__dirname, "index.html"));
 });
 
+const io = new Server(server);
 io.on("connection", (socket) => {
-  socket.on("chat message", (msg) => {
-    io.emit("chat message", msg);
+  console.log("a new user connected");
+
+  socket.on("new message", (msg) => {
+    io.emit("new message", msg);
   });
 });
 
